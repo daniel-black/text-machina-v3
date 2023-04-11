@@ -1,13 +1,34 @@
 'use client';
 
+import { MessageSchema } from "@/utils/zod";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, useState } from "react";
+
+async function parseStream(stream: ReadableStream) {
+  const reader = stream.getReader();
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) {
+      reader.releaseLock();
+      break;
+    }
+    const decoder = new TextDecoder();
+    const decodedData = decoder.decode(value);
+    // const parsedData = JSON.parse(decodedData);
+    console.log(`|${decodedData}|`);
+    // do something with parsedData
+  }
+}
 
 export default function MessageInput() {
   const formRef = useRef<HTMLFormElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const searchParams = useSearchParams();
   const router = useRouter();
+
+  const [response, setResponse] = useState('')
+
+  console.log(response);
 
   const handleFocus = useCallback(() => {
     if (textareaRef.current) textareaRef.current.focus();
@@ -24,7 +45,7 @@ export default function MessageInput() {
     }
   }, [textareaRef]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!textareaRef.current?.value) return;
     console.log(textareaRef.current.value);
@@ -34,7 +55,41 @@ export default function MessageInput() {
       // router.replace(`/chat?id=${'nacho'}`);
     }
 
-    
+    const parsedMessage = MessageSchema.parse({
+      role: 'user',
+      content: textareaRef.current.value,
+    });
+
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      body: JSON.stringify(parsedMessage),
+    });
+
+    if (!res.ok || !res.body) {
+      throw new Error(res.statusText);
+    }
+
+    const stream = await res.body;
+    // parseStream(stream);
+    // for await (const chunk of stream) {
+    //   // Do something with each "chunk"
+    //   console.log(chunk)
+    // }
+
+    const reader = stream.getReader();
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) {
+        reader.releaseLock();
+        break;
+      }
+      const decoder = new TextDecoder();
+      const decodedData = decoder.decode(value);
+      // const parsedData = JSON.parse(decodedData);
+      setResponse(response => response + decodedData);
+      // console.log(`|${decodedData}|`);
+      // do something with parsedData
+    }
   }
 
   return (
