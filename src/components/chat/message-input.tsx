@@ -1,10 +1,13 @@
 'use client';
 
+import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useRef } from "react";
 
 export default function MessageInput() {
   const formRef = useRef<HTMLFormElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
   const handleFocus = useCallback(() => {
     if (textareaRef.current) textareaRef.current.focus();
@@ -25,6 +28,13 @@ export default function MessageInput() {
     e.preventDefault();
     if (!textareaRef.current?.value) return;
     console.log(textareaRef.current.value);
+
+    if (!searchParams.has('id')) {
+      // new chat
+      // router.replace(`/chat?id=${'nacho'}`);
+    }
+
+    
   }
 
   return (
