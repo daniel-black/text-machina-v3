@@ -1,7 +1,18 @@
-export default function ChatPage() {
+type ChatPageProps = {
+  searchParams: { id: string } | undefined;
+}
+
+export default function ChatPage({ searchParams }: ChatPageProps) {
+  if (!searchParams?.id) {
+    return (
+      <div>Start chatting</div>
+    );
+  }
+
   return (
     <div>
-      chat page
+      <p>chat page</p>
+      <p>chat id: {searchParams.id}</p>
     </div>
   );
 }
