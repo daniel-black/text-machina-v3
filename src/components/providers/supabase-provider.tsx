@@ -6,8 +6,7 @@ import { useRouter } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
 import type { SupabaseClient } from "@supabase/auth-helpers-nextjs"
 
-type SupabaseContextType = { supabase: SupabaseClient };
-
+export type SupabaseContextType = { supabase: SupabaseClient };
 export const SupabaseContext = createContext<SupabaseContextType | undefined>(undefined);
 
 export default function SupabaseProvider({ children }: LayoutProps) {
