@@ -1,5 +1,5 @@
-import { MessageSchema } from "@/utils/zod";
-import { NextRequest, NextResponse } from "next/server";
+import { MessagesSchema } from "@/utils/zod";
+import { NextRequest } from "next/server";
 import { OpenAI } from "openai-streams";
 
 export const runtime = 'edge';
@@ -18,15 +18,12 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const parsedBody = MessageSchema.parse(body);
+  const messages = MessagesSchema.parse(body);
 
   const stream = await OpenAI('chat', {
     model: 'gpt-3.5-turbo',
-    messages: [parsedBody],
+    messages: messages,
   });
 
   return new Response(stream);
-
-  // console.log(parsedBody);
-  // return NextResponse.json({parsedBody: parsedBody});
 }

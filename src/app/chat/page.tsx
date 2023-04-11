@@ -1,21 +1,24 @@
-import Thread from "@/components/chat/thread";
+import Chat from "@/components/chat/chat";
+import { Message } from "@/utils/zod";
 
 type ChatPageProps = {
   searchParams: { id: string } | undefined;
 }
 
 export default function ChatPage({ searchParams }: ChatPageProps) {
-  if (!searchParams?.id) {
-    return (
-      <div>Start chatting</div>
-    );
+  let existingMessages: Message[] = [{
+    role: 'system',
+    content: 'You are a world class programmer. You have seen every pattern and every optimization. Answer questions to the best of your abilities and always respond in Markdown.'
+  }];
+
+  if (searchParams?.id) {
+    // existingMessages = await db.chat.getMessages(searchParams.id)
   }
 
   return (
-    <div>
-      <p>chat page</p>
-      <p>chat id: {searchParams.id}</p>
-      <Thread />
-    </div>
+    <Chat
+      chatId={searchParams?.id}
+      existingMessages={existingMessages}
+    />
   );
 }

@@ -9,3 +9,5 @@ export const MessageSchema = z.object({
   content: z.string().trim()
 });
 export type Message = z.infer<typeof MessageSchema>;
+
+export const MessagesSchema = z.array(MessageSchema);
