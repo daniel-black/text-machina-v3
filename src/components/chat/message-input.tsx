@@ -1,24 +1,25 @@
 'use client';
 
+import { useChatActions } from "@/stores/chat-store";
 import { MessageSchema } from "@/utils/zod";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef } from "react";
 
-async function parseStream(stream: ReadableStream) {
-  const reader = stream.getReader();
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) {
-      reader.releaseLock();
-      break;
-    }
-    const decoder = new TextDecoder();
-    const decodedData = decoder.decode(value);
-    // const parsedData = JSON.parse(decodedData);
-    console.log(`|${decodedData}|`);
-    // do something with parsedData
-  }
-}
+// async function parseStream(stream: ReadableStream) {
+//   const reader = stream.getReader();
+//   while (true) {
+//     const { done, value } = await reader.read();
+//     if (done) {
+//       reader.releaseLock();
+//       break;
+//     }
+//     const decoder = new TextDecoder();
+//     const decodedData = decoder.decode(value);
+//     // const parsedData = JSON.parse(decodedData);
+//     console.log(`|${decodedData}|`);
+//     // do something with parsedData
+//   }
+// }
 
 export default function MessageInput() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -26,9 +27,7 @@ export default function MessageInput() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const [response, setResponse] = useState('')
-
-  console.log(response);
+  const { addMessage, appendToLastMessageContent } = useChatActions();
 
   const handleFocus = useCallback(() => {
     if (textareaRef.current) textareaRef.current.focus();
@@ -48,7 +47,6 @@ export default function MessageInput() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!textareaRef.current?.value) return;
-    console.log(textareaRef.current.value);
 
     if (!searchParams.has('id')) {
       // new chat
@@ -60,6 +58,8 @@ export default function MessageInput() {
       content: textareaRef.current.value,
     });
 
+    addMessage(parsedMessage);
+
     const res = await fetch('/api/chat', {
       method: 'POST',
       body: JSON.stringify(parsedMessage),
@@ -70,25 +70,26 @@ export default function MessageInput() {
     }
 
     const stream = await res.body;
-    // parseStream(stream);
-    // for await (const chunk of stream) {
-    //   // Do something with each "chunk"
-    //   console.log(chunk)
-    // }
 
+    addMessage({
+      role: 'assistant',
+      content: '',
+    });
+
+    // let isFirst = true;
     const reader = stream.getReader();
+
     while (true) {
       const { done, value } = await reader.read();
       if (done) {
         reader.releaseLock();
         break;
       }
+
       const decoder = new TextDecoder();
       const decodedData = decoder.decode(value);
-      // const parsedData = JSON.parse(decodedData);
-      setResponse(response => response + decodedData);
-      // console.log(`|${decodedData}|`);
-      // do something with parsedData
+
+      appendToLastMessageContent(decodedData);
     }
   }
 

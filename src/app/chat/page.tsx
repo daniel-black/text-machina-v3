@@ -1,3 +1,5 @@
+import Thread from "@/components/chat/thread";
+
 type ChatPageProps = {
   searchParams: { id: string } | undefined;
 }
@@ -13,6 +15,7 @@ export default function ChatPage({ searchParams }: ChatPageProps) {
     <div>
       <p>chat page</p>
       <p>chat id: {searchParams.id}</p>
+      <Thread />
     </div>
   );
 }
