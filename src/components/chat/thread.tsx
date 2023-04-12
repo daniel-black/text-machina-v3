@@ -8,8 +8,8 @@ type ThreadProps = {
 export default function Thread({ messages }: ThreadProps) {
   
   return (
-    <div className="grow overflow-y-auto">
-      <ul className="space-y-3">
+    <div className="grow overflow-y-auto bg-zinc-200 p-5 shadow-inner md:rounded-bl-lg md:border-b md:border-l md:border-zinc-300">
+      <ul className="space-y-5">
         {messages.map((message, index) => <MessageBubble key={index} message={message} />)}
       </ul>
     </div>
@@ -34,15 +34,15 @@ function MessageBubble({ message }: MessageBubbleProps) {
     >
       <div
         className={`
-        ${isSystem ? 'bg-zinc-600 text-zinc-400' : isUser ? 'bg-[#218aff] text-[#fdfdfd]' : 'bg-[#d8d8d8] text-black'}
-          bg-rose-400 py-3 px-4 rounded-xl shadow ${isSystem ? 'w-full' : 'max-w-[90%]'}
-          overflow-x-auto
+        ${isSystem ? 'bg-zinc-100 text-zinc-500' : isUser ? 'bg-[#218aff] text-[#fdfdfd]' : 'bg-zinc-50 text-zinc-600'}
+          px-5 py-4 rounded-2xl shadow ${isSystem ? 'w-full' : 'max-w-[90%]'}
+          overflow-x-auto space-y-2 leading-relaxed
         `}
       >
         {isSystem ? (
           <>
-            <p className="text-sm">system message:</p>
-            <p>{message.content}</p>
+            <p className="text-xs">system message:</p>
+            <p className="text-sm">{message.content}</p>
           </>
         ) : (
           <ReactMarkdown>

@@ -13,7 +13,7 @@ export type LayoutProps = {
 export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang="en">
-      <body className='bg-zinc-900 text-zinc-300 h-screen w-full flex grow flex-col'>
+      <body className='bg-zinc-100 text-zinc-600 h-screen w-full flex grow flex-col'>
         <SupabaseProvider>
           {children}
         </SupabaseProvider>
