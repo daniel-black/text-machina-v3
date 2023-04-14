@@ -47,13 +47,11 @@ export default function Chat(props: ChatProps) {
   }
   
   return (
-    <div className="relative flex flex-col">
+    <div className="grow flex flex-col">
       <Thread
         messages={gptResponse === '' ? messages : [...messages, { role: 'assistant', content: gptResponse }]}
       />
-      <MessageInput
-        handleSend={handleMessages}
-      />
+      <MessageInput handleSend={handleMessages} />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { Message } from "@/utils/zod";
 import ScrollToBottom from "./scroll-to-bottom";
 import Markdown from "./markdown";
+import ScrollableContainer from "../container/scrollable-container";
 
 type ThreadProps = {
   messages: Message[];
@@ -9,12 +10,14 @@ type ThreadProps = {
 export default function Thread({ messages }: ThreadProps) {
   
   return (
-    <div className="overflow-y-auto bg-zinc-200 p-5 pb-[90px]">
+    <ScrollableContainer
+      classes="bg-zinc-200 p-5"
+    >
       <ul className="space-y-5">
         {messages.map((message, index) => <MessageBubble key={index} message={message} />)}
       </ul>
       <ScrollToBottom messages={messages} />
-    </div>
+    </ScrollableContainer>
   );
 }
 
