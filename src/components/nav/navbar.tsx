@@ -2,37 +2,39 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { MenuIcon, XIcon } from "../assets";
 
 export default function Navbar() {
   const [showFullNav, setShowFullNav] = useState<boolean>(true);
   return (
     <nav
       className={`
-      bg-stone-900
-        p-5 flex flex-col w-full
-        ${showFullNav ? 'sm:w-64 h-fit sm:h-full space-y-5' : 'sm:w-16'}
+      bg-zinc-100 border-b sm:border-b-0 sm:border-r border-zinc-300
+        p-3 flex flex-col w-full
+        ${showFullNav ? 'sm:w-72 h-fit sm:h-full space-y-5' : 'sm:w-16'}
         transition-all duration-100 ease-in-out
       `}
     >
       {/* Nav header */}
       <div className="flex justify-between">
         {/* The main action button or link for the nav */}
-        <button
+        <Link
+          href="/chat"
           className={`
-            border-stone-700 bg-stone-800 text-stone-300
-            p-2 rounded border w-fit sm:w-full 
+            border-zinc-950 bg-zinc-800 text-zinc-300
+            p-2 rounded border w-fit sm:w-full text-center shadow
             ${showFullNav ? '' : 'sm:opacity-0 sm:invisible'}
             transition-all duration-75 ease-in-out
           `}
         >
-          Action Button
-        </button>
+          ＋ New Chat
+        </Link>
         {/* Toggle for showing and hiding Nav when screen is small  */}
         <button
-          className="p-2 rounded border sm:hidden border-stone-700 bg-stone-800 text-stone-300 px-3"
+          className="px-2 sm:hidden text-zinc-800"
           onClick={() => setShowFullNav(!showFullNav)}
         >
-          {showFullNav ? 'X' : 'Menu'}
+          {showFullNav ? <XIcon strokeWidth={2} /> : <MenuIcon strokeWidth={2} />}
         </button>
       </div>
 
@@ -45,11 +47,11 @@ export default function Navbar() {
       >
         {/* The main links go here. This grows to take up space. */}
         <ul className="grow flex flex-col space-y-2">
-          <Link className="hover:underline underline-offset-2" href="/">Dashboard</Link>
-          <Link className="hover:underline underline-offset-2" href="/">Teams</Link>
-          <Link className="hover:underline underline-offset-2" href="/">Projects</Link>
-          <Link className="hover:underline underline-offset-2" href="/">Analytics</Link>
-          <Link className="hover:underline underline-offset-2" href="/">Reporting</Link>
+          <Link className="hover:underline underline-offset-2" href="/">What is Redis?</Link>
+          <Link className="hover:underline underline-offset-2" href="/">EDI 204</Link>
+          <Link className="hover:underline underline-offset-2" href="/">React UseEffect</Link>
+          <Link className="hover:underline underline-offset-2" href="/">Banana Bread Recipe</Link>
+          <Link className="hover:underline underline-offset-2" href="/">Rate Limiting</Link>
         </ul>
 
         {/* Nav footer. Items in this div are forced down to the bottom of the screen when screen is big */}
@@ -61,7 +63,7 @@ export default function Navbar() {
 
       {/* Toggle for showing and hiding Nav when screen is big and navbar shows as a sidebar */}
       <button
-        className="p-2 rounded border hidden sm:block border-stone-700 bg-stone-800 text-stone-300"
+        className="p-2 rounded border hidden sm:block border-zinc-700 bg-zinc-800 text-zinc-300"
         onClick={() => setShowFullNav(!showFullNav)}
       >
         {/* Can use icons or arrows or whatever here */}

@@ -1,4 +1,5 @@
 import Chat from "@/components/chat/chat";
+import Navbar from "@/components/nav/navbar";
 import { Message } from "@/utils/zod";
 
 type ChatPageProps = {
@@ -16,9 +17,13 @@ export default function ChatPage({ searchParams }: ChatPageProps) {
   }
 
   return (
-    <Chat
-      chatId={searchParams?.id}
-      existingMessages={existingMessages}
-    />
+    <>
+      {/* Navbar here in the page instead of the layout so we can grab that searchParam chatId easy */}
+      <Navbar />
+      <Chat
+        chatId={searchParams?.id}
+        existingMessages={existingMessages}
+      />
+    </>
   );
 }

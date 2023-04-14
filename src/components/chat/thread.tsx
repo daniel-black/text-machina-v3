@@ -10,11 +10,11 @@ type ThreadProps = {
 export default function Thread({ messages }: ThreadProps) {
   
   return (
-    <ScrollableContainer
-      classes="bg-zinc-200 p-5"
-    >
+    <ScrollableContainer classes="bg-zinc-200 p-5">
       <ul className="space-y-5">
-        {messages.map((message, index) => <MessageBubble key={index} message={message} />)}
+        {messages.map((message, index) => (
+          <MessageBubble key={index} message={message} />
+        ))}
       </ul>
       <ScrollToBottom messages={messages} />
     </ScrollableContainer>
