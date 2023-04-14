@@ -1,5 +1,6 @@
 import { Message } from "@/utils/zod";
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import ScrollToBottom from "./scroll-to-bottom";
+import Markdown from "./markdown";
 
 type ThreadProps = {
   messages: Message[];
@@ -8,10 +9,11 @@ type ThreadProps = {
 export default function Thread({ messages }: ThreadProps) {
   
   return (
-    <div className="grow overflow-y-auto bg-zinc-200 p-5 shadow-inner md:rounded-bl-lg md:border-b md:border-l md:border-zinc-300">
+    <div className="overflow-y-auto bg-zinc-200 p-5 pb-[90px]">
       <ul className="space-y-5">
         {messages.map((message, index) => <MessageBubble key={index} message={message} />)}
       </ul>
+      <ScrollToBottom messages={messages} />
     </div>
   );
 }
@@ -45,9 +47,7 @@ function MessageBubble({ message }: MessageBubbleProps) {
             <p className="text-sm">{message.content}</p>
           </>
         ) : (
-          <ReactMarkdown>
-            {message.content}
-          </ReactMarkdown>
+          <Markdown markdown={message.content} />
         )}
       </div>
     </div>

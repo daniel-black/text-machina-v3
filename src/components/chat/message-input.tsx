@@ -36,7 +36,7 @@ export default function MessageInput({ handleSend }: MessageInputProps) {
     <form
       ref={formRef}
       onSubmit={handleSubmit}
-      className="flex space-x-3 py-3 pl-3 md:pl-0 pr-3 bg-zinc-100"
+      className="fixed bottom-0 w-full flex space-x-3 p-3 bg-zinc-100 border-t border-zinc-300 shadow"
     >
       <textarea
         ref={textareaRef}

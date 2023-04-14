@@ -47,9 +47,13 @@ export default function Chat(props: ChatProps) {
   }
   
   return (
-    <div className="w-full max-w-full h-screen flex flex-col">
-      <Thread messages={gptResponse === '' ? messages : [...messages, { role: 'assistant', content: gptResponse }]} />
-      <MessageInput handleSend={handleMessages} />
+    <div className="relative flex flex-col">
+      <Thread
+        messages={gptResponse === '' ? messages : [...messages, { role: 'assistant', content: gptResponse }]}
+      />
+      <MessageInput
+        handleSend={handleMessages}
+      />
     </div>
   );
 }

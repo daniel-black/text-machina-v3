@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
   const messages = MessagesSchema.parse(body);
 
   const stream = await OpenAI('chat', {
-    model: 'gpt-3.5-turbo',
+    model: 'gpt-4',
     messages: messages,
   });
 

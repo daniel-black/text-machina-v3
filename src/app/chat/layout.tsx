@@ -1,13 +1,15 @@
+import Sidebar from "@/components/nav/sidebar";
 import { LayoutProps } from "../layout";
-import Menu from "@/components/menu/menu";
+import ScreenContainer from "@/components/container/screen-container";
+import Navbar from "@/components/nav/navbar";
 
 export default function ChatLayout({ children }: LayoutProps) {
   return (
-    <div className="h-full w-full flex flex-col md:flex-row">
-      <Menu />
+    <ScreenContainer>
+      <Navbar />
       <main className="grow w-full flex flex-col">
         {children}
       </main>
-    </div>
+    </ScreenContainer>
   );
 }
