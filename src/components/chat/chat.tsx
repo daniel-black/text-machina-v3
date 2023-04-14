@@ -1,10 +1,11 @@
 'use client';
 
 import type { Message } from "@/utils/zod";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Thread from "./thread";
 import MessageInput from "./message-input";
 import { Decoder, getResponseStream } from "@/utils/stream";
+import { ChatContext, ChatContextType } from "../providers/chat-provider";
 
 type ChatProps = {
   chatId: string | undefined;
@@ -15,13 +16,14 @@ export default function Chat(props: ChatProps) {
   // const [chatId, setChatId] = useState<string | undefined>(() => props.chatId);
   const [messages, setMessages] = useState<Message[]>(() => props.existingMessages);
   const [gptResponse, setGptResponse] = useState<string>('');
+  const { model } = useContext<ChatContextType>(ChatContext);
 
   async function handleMessages(newMessage: Message) {
     // add new message to messages
     setMessages((messages) => [...messages, newMessage]);
 
     // call API
-    const stream = await getResponseStream([...messages, newMessage]);
+    const stream = await getResponseStream([...messages, newMessage], model);
 
     // read stream
     const reader = stream.getReader();
