@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { MenuIcon, XIcon } from "../assets";
+import ModelToggle from "./model-toggle";
 
 export default function Navbar() {
   const [showFullNav, setShowFullNav] = useState<boolean>(true);
@@ -59,6 +60,8 @@ export default function Navbar() {
           <Link className="hover:underline underline-offset-2" href="/">Profile</Link>
           <Link className="hover:underline underline-offset-2" href="/">Log out</Link>
         </div>
+
+        <ModelToggle />
       </div>
 
       {/* Toggle for showing and hiding Nav when screen is big and navbar shows as a sidebar */}

@@ -1,18 +1,35 @@
 'use client'
 
+import type { Model } from "@/utils/zod";
 import { LayoutProps } from "@/app/layout";
-import { Model } from "@/utils/zod";
-import { createContext } from "react";
+import { createContext, useState } from "react";
 
-export type ChatContextType = { model: Model };
+export type ChatContextType = {
+  model: Model;
+  setModel: (newModel: Model) => void;
+};
 
-const initialChatContextValue = { model: 'gpt-4' } as const;
-
-export const ChatContext = createContext<ChatContextType>(initialChatContextValue);
+export const ChatContext = createContext<ChatContextType>({
+  model: 'gpt-4',
+  setModel: () => {}
+});
 
 export default function ChatProvider({ children }: LayoutProps) {
+  const [chatContextValue, setChatContextValue] = useState<{ model: Model }>({
+    model: 'gpt-4',
+  });
+
+  function setModel(model: Model) {
+    setChatContextValue({ model });
+  }
+
   return (
-    <ChatContext.Provider value={initialChatContextValue}>
+    <ChatContext.Provider
+      value={{
+        model: chatContextValue.model,
+        setModel: setModel 
+      }}
+    >
       {children}
     </ChatContext.Provider>
   );
